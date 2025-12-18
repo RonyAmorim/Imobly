@@ -1,31 +1,30 @@
 import { User } from '../../entities/User';
 import { IAuthRepository, RegisterDTO } from '../../repositories/IAuthRepository';
+import { Email } from '../../value-objects/Email';
+import { Password } from '../../value-objects/Password';
 
 export class RegisterUseCase {
   constructor(private authRepository: IAuthRepository) {}
 
   async execute(data: RegisterDTO): Promise<User> {
-    this.validateInput(data);
-    const user = await this.authRepository.register(data);
-    return user;
-  }
-
-  private validateInput(data: RegisterDTO): void {
+    // Validate inputs using Value Objects
+    // This ensures that we never proceed with invalid domain data
     if (!data.name || data.name.trim().length < 3) {
       throw new Error('Nome deve ter no mínimo 3 caracteres');
     }
 
-    if (!data.email) {
-      throw new Error('Email é obrigatório');
-    }
+    const emailVO = Email.create(data.email);
+    const passwordVO = Password.create(data.password);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-      throw new Error('Email inválido');
-    }
-
-    if (data.password.length < 6) {
-      throw new Error('Senha deve ter no mínimo 6 caracteres');
-    }
+    // If validation passes, we pass the raw strings to the repository
+    // In a stricter implementation, the Repository interface could accept Value Objects,
+    // but we keep it simple here by passing the validated string values.
+    const user = await this.authRepository.register({
+      ...data,
+      email: emailVO.getValue(),
+      password: passwordVO.getValue(),
+    });
+    
+    return user;
   }
 }
