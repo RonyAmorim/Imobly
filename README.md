@@ -65,8 +65,11 @@ Complementando o cadastro, cada imóvel possui:
 
 Assista ao vídeo de apresentação do app pelo link abaixo:
 
-[Link para o vídeo no YouTube](https://youtube.com/seu-video-aqui)
-*(Edite este link com a URL real do seu vídeo)*
+<div align="center">
+  <video src="/media/preview.mp4" width="100%" controls>
+    Seu navegador não suporta a tag de vídeo.
+  </video>
+</div>
 
 ---
 
