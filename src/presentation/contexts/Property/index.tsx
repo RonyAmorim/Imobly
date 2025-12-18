@@ -8,8 +8,8 @@ import { GetPropertyByIdUseCase } from '@domain/usecases/property/GetPropertyByI
 import { CreatePropertyUseCase } from '@domain/usecases/property/CreatePropertyUseCase';
 import { UpdatePropertyUseCase } from '@domain/usecases/property/UpdatePropertyUseCase';
 import { DeletePropertyUseCase } from '@domain/usecases/property/DeletePropertyUseCase';
-import { useProperty } from '../hooks/useProperty';
-import { useAuthContext } from './AuthContext';
+import { useProperty } from '../../hooks/useProperty';
+import { useAuthContext } from '../Auth';
 
 interface PropertyContextData {
   properties: Property[];

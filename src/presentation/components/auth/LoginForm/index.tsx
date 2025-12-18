@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Input, Button } from '../../common';
 import { validateEmail } from '@shared/utils/validators';
-import { useNotification } from '@presentation/contexts/NotificationContext';
+import { useNotification } from '@presentation/contexts/Notification';
 import { styles } from './styles';
 
 interface LoginFormProps {

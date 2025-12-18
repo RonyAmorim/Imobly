@@ -5,7 +5,7 @@ import { Card, Text, Divider } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ClientStackParamList } from '@presentation/navigation/types';
 import { Button, AppHeader } from '@presentation/components/common';
-import { useAuthContext } from '@presentation/contexts/AuthContext';
+import { useAuthContext } from '@presentation/contexts/Auth';
 import { styles } from './styles';
 
 type ProfileScreenProps = NativeStackScreenProps<ClientStackParamList, 'Profile'>;

@@ -6,7 +6,7 @@ import { Text, Divider } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ClientStackParamList } from '@presentation/navigation/types';
 import { LoadingSpinner, AppHeader } from '@presentation/components/common';
-import { usePropertyContext } from '@presentation/contexts/PropertyContext';
+import { usePropertyContext } from '@presentation/contexts/Property';
 import { Property } from '@domain/entities/Property';
 import { formatPrice } from '@shared/utils/formatters';
 import { styles } from './styles';

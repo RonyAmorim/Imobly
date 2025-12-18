@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ClientStackParamList } from '@presentation/navigation/types';
 import { PropertyCard } from '@presentation/components/property';
 import { EmptyState, LoadingSpinner, AppHeader } from '@presentation/components/common';
-import { usePropertyContext } from '@presentation/contexts/PropertyContext';
+import { usePropertyContext } from '@presentation/contexts/Property';
 import { styles } from './styles';
 
 type ClientHomeScreenProps = NativeStackScreenProps<ClientStackParamList, 'ClientHome'>;

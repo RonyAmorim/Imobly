@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AdminStackParamList } from '@presentation/navigation/types';
 import { PropertyForm } from '@presentation/components/property';
 import { LoadingSpinner, AppHeader } from '@presentation/components/common';
-import { usePropertyContext } from '@presentation/contexts/PropertyContext';
+import { usePropertyContext } from '@presentation/contexts/Property';
 import { Property } from '@domain/entities/Property';
 import { styles } from './styles';
 

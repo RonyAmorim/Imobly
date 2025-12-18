@@ -10,9 +10,9 @@ import { LoginUseCase } from '@domain/usecases/auth/LoginUseCase';
 import { RegisterUseCase } from '@domain/usecases/auth/RegisterUseCase';
 import { LogoutUseCase } from '@domain/usecases/auth/LogoutUseCase';
 import { GetCurrentUserUseCase } from '@domain/usecases/auth/GetCurrentUserUseCase';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { RegisterDTO } from '@domain/repositories/IAuthRepository';
-import { styles } from './AuthContext.styles';
+import { styles } from './styles';
 
 interface AuthContextData {
   user: User | null;

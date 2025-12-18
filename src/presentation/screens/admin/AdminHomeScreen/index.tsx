@@ -5,8 +5,8 @@ import { Text } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AdminStackParamList } from '@presentation/navigation/types';
 import { Button, AppHeader } from '@presentation/components/common';
-import { useAuthContext } from '@presentation/contexts/AuthContext';
-import { usePropertyContext } from '@presentation/contexts/PropertyContext';
+import { useAuthContext } from '@presentation/contexts/Auth';
+import { usePropertyContext } from '@presentation/contexts/Property';
 import { styles } from './styles';
 
 type AdminHomeScreenProps = NativeStackScreenProps<AdminStackParamList, 'AdminHome'>;

@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AdminStackParamList } from '@presentation/navigation/types';
 import { PropertyCard } from '@presentation/components/property';
 import { EmptyState, LoadingSpinner, ConfirmDialog, Button, AppHeader } from '@presentation/components/common';
-import { usePropertyContext } from '@presentation/contexts/PropertyContext';
+import { usePropertyContext } from '@presentation/contexts/Property';
 import { styles } from './styles';
 
 type PropertyListScreenProps = NativeStackScreenProps<AdminStackParamList, 'PropertyList'>;

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react';
 import { Snackbar, Portal } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { styles } from './NotificationContext.styles';
+import { styles } from './styles';
 
 type NotificationType = 'success' | 'error' | 'info';
 

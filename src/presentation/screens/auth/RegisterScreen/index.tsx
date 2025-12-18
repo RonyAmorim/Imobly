@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '@presentation/navigation/types';
 import { RegisterForm } from '@presentation/components/auth';
-import { useAuthContext } from '@presentation/contexts/AuthContext';
+import { useAuthContext } from '@presentation/contexts/Auth';
 import { UserRole } from '@domain/entities/User';
 import { styles } from './styles';
 

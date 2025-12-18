@@ -12,7 +12,7 @@ import {
 } from '@shared/utils/validators';
 import { formatCNPJ, formatCEP } from '@shared/utils/formatters';
 import { fetchAddressByCep } from '@data/services/CepService';
-import { useNotification } from '@presentation/contexts/NotificationContext';
+import { useNotification } from '@presentation/contexts/Notification';
 import { styles } from './styles';
 
 interface PropertyFormProps {
