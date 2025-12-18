@@ -1,9 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AdminHomeScreen } from '../screens/admin/AdminHomeScreen';
-import { PropertyListScreen } from '../screens/admin/PropertyListScreen';
-import { CreatePropertyScreen } from '../screens/admin/CreatePropertyScreen';
-import { EditPropertyScreen } from '../screens/admin/EditPropertyScreen';
+import { AdminHomeScreen } from '../../screens/admin/AdminHomeScreen';
+import { PropertyListScreen } from '../../screens/admin/PropertyListScreen';
+import { CreatePropertyScreen } from '../../screens/admin/CreatePropertyScreen';
+import { EditPropertyScreen } from '../../screens/admin/EditPropertyScreen';
 
 const Stack = createNativeStackNavigator();
 

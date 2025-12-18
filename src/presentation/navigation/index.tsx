@@ -2,11 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { UserRole } from '@domain/entities/User';
-import { useAuthContext } from '../contexts/AuthContext';
-import { AuthStack } from './AuthStack';
-import { AdminStack } from './AdminStack';
-import { ClientStack } from './ClientStack';
-import { styles } from './index.styles';
+import { useAuthContext } from '../contexts/Auth';
+import { AuthStack } from './stacks/AuthStack';
+import { AdminStack } from './stacks/AdminStack';
+import { ClientStack } from './stacks/ClientStack';
+import { styles } from './styles';
 
 export const RootNavigator: React.FC = () => {
   const { user, isLoading } = useAuthContext();
