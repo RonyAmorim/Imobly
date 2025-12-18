@@ -63,13 +63,9 @@ Complementando o cadastro, cada imóvel possui:
 
 ## Demonstração em Vídeo
 
-Assista ao vídeo de apresentação do app pelo link abaixo:
+Assista ao vídeo de apresentação do app. Clique na imagem abaixo para ser direcionado:
 
-<div align="center">
-  <video src="/media/preview.mp4" width="100%" controls>
-    Seu navegador não suporta a tag de vídeo.
-  </video>
-</div>
+[![Imobly App Demo Thumbnail](https://img.youtube.com/vi/6fGybBmwqE0/hqdefault.jpg)](https://youtu.be/6fGybBmwqE0 "Assista à demonstração do Imobly")
 
 ---
 
