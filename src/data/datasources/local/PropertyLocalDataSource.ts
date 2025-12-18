@@ -1,62 +1,53 @@
 import { Property } from '@domain/entities/Property';
 import { DatabaseHelper } from './DatabaseHelper';
-
-interface PropertyRow {
-  id: string;
-  name: string;
-  address: string;
-  cnpj: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
-}
+import { PropertyModel, PropertyMapper } from '../../models/PropertyModel';
 
 export class PropertyLocalDataSource {
   async getAll(): Promise<Property[]> {
     const db = DatabaseHelper.getDB();
-    const result = await db.getAllAsync<PropertyRow>('SELECT * FROM properties ORDER BY createdAt DESC');
+    const result = await db.getAllAsync<PropertyModel>('SELECT * FROM properties ORDER BY createdAt DESC');
     
-    return result.map(this.mapToProperty);
+    return result.map(PropertyMapper.toEntity);
   }
 
   async getById(id: string): Promise<Property | null> {
     const db = DatabaseHelper.getDB();
-    const result = await db.getAllAsync<PropertyRow>('SELECT * FROM properties WHERE id = ?', [id]);
+    const result = await db.getAllAsync<PropertyModel>('SELECT * FROM properties WHERE id = ?', [id]);
     
     if (result.length === 0) return null;
-    return this.mapToProperty(result[0]);
+    return PropertyMapper.toEntity(result[0]);
   }
 
   async create(property: Omit<Property, 'id' | 'createdAt' | 'updatedAt'>): Promise<Property> {
     const db = DatabaseHelper.getDB();
     
-    const newProperty: Property = {
+    // Create temporary entity to generate IDs and Dates
+    const tempEntity: Property = {
       ...property,
       id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
+    const model = PropertyMapper.fromEntity(tempEntity);
+
     await db.runAsync(
       `INSERT INTO properties (id, name, address, cnpj, description, price, imageUrl, createdAt, updatedAt, createdBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        newProperty.id,
-        newProperty.name,
-        JSON.stringify(newProperty.address),
-        newProperty.cnpj,
-        newProperty.description,
-        newProperty.price,
-        newProperty.imageUrl,
-        newProperty.createdAt.toISOString(),
-        newProperty.updatedAt.toISOString(),
-        newProperty.createdBy,
+        model.id,
+        model.name,
+        model.address,
+        model.cnpj,
+        model.description,
+        model.price,
+        model.imageUrl,
+        model.createdAt,
+        model.updatedAt,
+        model.createdBy,
       ]
     );
 
-    return newProperty;
+    return tempEntity;
   }
 
   async update(id: string, updates: Partial<Property>): Promise<Property> {
@@ -67,23 +58,26 @@ export class PropertyLocalDataSource {
       throw new Error('Imóvel não encontrado');
     }
 
-    const updatedProperty: Property = {
+    const updatedEntity: Property = {
       ...current,
       ...updates,
       updatedAt: new Date(),
     };
+    
+    const model = PropertyMapper.fromEntity(updatedEntity);
 
     const fields = [];
     const values = [];
 
-    if (updates.name) { fields.push('name = ?'); values.push(updates.name); }
-    if (updates.address) { fields.push('address = ?'); values.push(JSON.stringify(updates.address)); }
-    if (updates.cnpj) { fields.push('cnpj = ?'); values.push(updates.cnpj); }
-    if (updates.description) { fields.push('description = ?'); values.push(updates.description); }
-    if (updates.price) { fields.push('price = ?'); values.push(updates.price); }
-    if (updates.imageUrl) { fields.push('imageUrl = ?'); values.push(updates.imageUrl); }
+    // Construct query based on model to ensure correct DB format
+    if (updates.name) { fields.push('name = ?'); values.push(model.name); }
+    if (updates.address) { fields.push('address = ?'); values.push(model.address); }
+    if (updates.cnpj) { fields.push('cnpj = ?'); values.push(model.cnpj); }
+    if (updates.description) { fields.push('description = ?'); values.push(model.description); }
+    if (updates.price) { fields.push('price = ?'); values.push(model.price); }
+    if (updates.imageUrl) { fields.push('imageUrl = ?'); values.push(model.imageUrl); }
     
-    fields.push('updatedAt = ?'); values.push(updatedProperty.updatedAt.toISOString());
+    fields.push('updatedAt = ?'); values.push(model.updatedAt);
     values.push(id);
 
     await db.runAsync(
@@ -91,21 +85,12 @@ export class PropertyLocalDataSource {
       values
     );
 
-    return updatedProperty;
+    return updatedEntity;
   }
 
   async delete(id: string): Promise<void> {
     const db = DatabaseHelper.getDB();
     await db.runAsync('DELETE FROM properties WHERE id = ?', [id]);
-  }
-
-  private mapToProperty(row: PropertyRow): Property {
-    return {
-      ...row,
-      address: JSON.parse(row.address),
-      createdAt: new Date(row.createdAt),
-      updatedAt: new Date(row.updatedAt),
-    };
   }
 }
 

@@ -1,5 +1,6 @@
 import { User, UserRole } from '@domain/entities/User';
 import { AsyncStorageDataSource } from './AsyncStorageDataSource';
+import { UserModel, UserMapper } from '../../models/UserModel';
 
 export class AuthLocalDataSource {
   private readonly USER_KEY = '@imobly:user';
@@ -9,10 +10,10 @@ export class AuthLocalDataSource {
   constructor(private asyncStorage: AsyncStorageDataSource) {}
 
   async login(email: string, password: string): Promise<User> {
-    const users = await this.asyncStorage.load<User[]>(this.USERS_LIST_KEY);
-    const user = users?.find((u) => u.email === email.toLowerCase().trim());
+    const userModels = await this.asyncStorage.load<UserModel[]>(this.USERS_LIST_KEY);
+    const userModel = userModels?.find((u) => u.email === email.toLowerCase().trim());
 
-    if (!user) {
+    if (!userModel) {
       console.error('[AuthLocalDataSource] Login - usuário não encontrado');
       throw new Error('Credenciais inválidas');
     }
@@ -20,21 +21,22 @@ export class AuthLocalDataSource {
     const passwords = await this.asyncStorage.load<Record<string, string>>(
       this.PASSWORDS_KEY,
     );
-    const savedPassword = passwords?.[user.id];
+    const savedPassword = passwords?.[userModel.id];
 
     if (savedPassword !== password) {
       console.error('[AuthLocalDataSource] Login - senha incorreta');
       throw new Error('Credenciais inválidas');
     }
 
+    const user = UserMapper.toEntity(userModel);
     await this.saveCurrentUser(user);
     return user;
   }
 
   async register(name: string, email: string, password: string, role: UserRole): Promise<User> {
-    const users = (await this.asyncStorage.load<User[]>(this.USERS_LIST_KEY)) || [];
+    const userModels = (await this.asyncStorage.load<UserModel[]>(this.USERS_LIST_KEY)) || [];
 
-    const emailExists = users.some((u) => u.email === email.toLowerCase().trim());
+    const emailExists = userModels.some((u) => u.email === email.toLowerCase().trim());
     if (emailExists) {
       throw new Error('Email já cadastrado');
     }
@@ -47,8 +49,9 @@ export class AuthLocalDataSource {
       createdAt: new Date(),
     };
 
-    users.push(newUser);
-    await this.asyncStorage.save(this.USERS_LIST_KEY, users);
+    const newUserModel = UserMapper.fromEntity(newUser);
+    userModels.push(newUserModel);
+    await this.asyncStorage.save(this.USERS_LIST_KEY, userModels);
 
     const passwords = (await this.asyncStorage.load<Record<string, string>>(
       this.PASSWORDS_KEY,
@@ -61,8 +64,8 @@ export class AuthLocalDataSource {
   }
 
   async getCurrentUser(): Promise<User | null> {
-    const user = await this.asyncStorage.load<User>(this.USER_KEY);
-    return user || null;
+    const userModel = await this.asyncStorage.load<UserModel>(this.USER_KEY);
+    return userModel ? UserMapper.toEntity(userModel) : null;
   }
 
   async logout(): Promise<void> {
@@ -70,6 +73,7 @@ export class AuthLocalDataSource {
   }
 
   private async saveCurrentUser(user: User): Promise<void> {
-    await this.asyncStorage.save(this.USER_KEY, user);
+    const userModel = UserMapper.fromEntity(user);
+    await this.asyncStorage.save(this.USER_KEY, userModel);
   }
 }
