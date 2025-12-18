@@ -2,7 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text, SegmentedButtons } from 'react-native-paper';
 import { Input, Button } from '../../common';
-import { validateEmail } from '@shared/utils/validators';
+import { Email } from '@domain/value-objects/Email';
+import { Password } from '@domain/value-objects/Password';
 import { UserRole } from '@domain/entities/User';
 import { useNotification } from '@presentation/contexts/Notification';
 import { styles } from './styles';
@@ -41,16 +42,20 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       newErrors.name = 'Nome deve ter no mínimo 3 caracteres';
     }
 
-    if (!email.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!validateEmail(email)) {
-      newErrors.email = 'Email inválido';
+    try {
+      Email.create(email);
+    } catch (error) {
+      if (error instanceof Error) {
+        newErrors.email = error.message;
+      }
     }
 
-    if (!password) {
-      newErrors.password = 'Senha é obrigatória';
-    } else if (password.length < 6) {
-      newErrors.password = 'Senha deve ter no mínimo 6 caracteres';
+    try {
+      Password.create(password);
+    } catch (error) {
+      if (error instanceof Error) {
+        newErrors.password = error.message;
+      }
     }
 
     if (password !== confirmPassword) {

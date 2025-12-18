@@ -2,7 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Input, Button } from '../../common';
-import { validateEmail } from '@shared/utils/validators';
+import { Email } from '@domain/value-objects/Email';
+import { Password } from '@domain/value-objects/Password';
 import { useNotification } from '@presentation/contexts/Notification';
 import { styles } from './styles';
 
@@ -31,16 +32,20 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const validateForm = useCallback(() => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!email.trim()) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!validateEmail(email)) {
-      newErrors.email = 'Email inválido';
+    try {
+      Email.create(email);
+    } catch (error) {
+      if (error instanceof Error) {
+        newErrors.email = error.message;
+      }
     }
 
-    if (!password) {
-      newErrors.password = 'Senha é obrigatória';
-    } else if (password.length < 6) {
-      newErrors.password = 'Senha deve ter no mínimo 6 caracteres';
+    try {
+      Password.create(password);
+    } catch (error) {
+      if (error instanceof Error) {
+        newErrors.password = error.message;
+      }
     }
 
     setErrors(newErrors);
